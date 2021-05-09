@@ -1,0 +1,13 @@
+.sidebar-nav {
+  padding: 8px 16px;
+  cursor: pointer;
+
+  .anchor {
+    color: #000;
+    display: block;
+  }
+}
+
+.sidebar-nav:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
