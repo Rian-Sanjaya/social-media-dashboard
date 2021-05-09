@@ -11,6 +11,7 @@ const Layout = () => {
       <main
         style={{
           marginLeft: '240px',
+          marginTop: '86px',
           boxSizing: 'border-box',
         }}
       >
