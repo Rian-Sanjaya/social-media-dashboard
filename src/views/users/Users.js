@@ -20,7 +20,7 @@ const Users = () => {
 
   return (
     <div>
-      <div>Users</div>
+      <h3>Users</h3>
       <Table hover responsive>
         <thead>
           <tr>
@@ -51,7 +51,8 @@ const Users = () => {
                     <td>
                       <Link
                         to={{
-                          pathname: `/users/${user.id}`
+                          pathname: `/users/${user.id}`,
+                          state: { userName: user.name },
                         }}
                       >
                         view

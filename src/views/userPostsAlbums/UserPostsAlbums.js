@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import classnames from 'classnames';
 import {
   TabContent,
@@ -19,7 +19,7 @@ import Api from '../../api/Api';
 
 const UserPostsAlbums = () => {
   const { id } = useParams();
-
+  const { state: { userName }} = useLocation();
   const [activeTab, setActiveTab] = useState('1');
   const [posts, setPosts] = useState([]);
   const [albums, setAlbums] = useState([]);
@@ -50,6 +50,7 @@ const UserPostsAlbums = () => {
 
   return (
     <div>
+      <h3>{userName}</h3>
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -107,7 +108,16 @@ const UserPostsAlbums = () => {
                     <Card>
                       <CardBody>
                         <CardTitle tag="h5">{album.title}</CardTitle>
-                        <span>view photos</span>
+                        <div>
+                          <Link
+                            to={{
+                              pathname: `/users/${id}/album/${album.id}`,
+                              state: { userName: userName, albumTitle: album.title },
+                            }}
+                          >
+                            View Photos
+                          </Link>
+                        </div>
                       </CardBody>
                     </Card>
                   </Col>

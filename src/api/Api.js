@@ -27,6 +27,14 @@ const Api = {
       );
     });
   },
+  fetchUserAlbum: (id) => {
+    return new Promise((resolve, reject) => {
+      axios.get(`${API_URL}/photos?albumId=${id}`).then(
+        resp => resolve(resp.data),
+        err => reject(),
+      );
+    });
+  },
 };
 
 export default Api;
