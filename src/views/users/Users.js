@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Table } from 'reactstrap';
 import Api from '../../api/Api';
 
@@ -23,7 +24,7 @@ const Users = () => {
       <Table hover responsive>
         <thead>
           <tr>
-            <th>#</th>
+            <th>No.</th>
             <th>Name</th>
             <th>Username</th>
             <th>Email</th>
@@ -31,7 +32,7 @@ const Users = () => {
             <th>Address</th>
             <th>Phone</th>
             <th>Company</th>
-            <th></th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +49,13 @@ const Users = () => {
                     <td>{user.phone}</td>
                     <td>{user.company.name}</td>
                     <td>
-                      <a href="$">view</a>
+                      <Link
+                        to={{
+                          pathname: `/users/${user.id}`
+                        }}
+                      >
+                        view
+                      </Link>
                     </td>
                   </tr>
                 )

@@ -11,6 +11,22 @@ const Api = {
       );
     });
   },
+  fetchUserPosts: (id) => {
+    return new Promise((resolve, reject) => {
+      axios.get(`${API_URL}/posts?userId=${id}`).then(
+        resp => resolve(resp.data),
+        err => reject(),
+      );
+    });
+  },
+  fetchUserAlbums: (id) => {
+    return new Promise((resolve, reject) => {
+      axios.get(`${API_URL}/albums?userId=${id}`).then(
+        resp => resolve(resp.data),
+        err => reject(),
+      );
+    });
+  },
 };
 
 export default Api;
