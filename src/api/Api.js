@@ -59,6 +59,14 @@ const Api = {
       )
     })
   },
+  fetchComments: (postId) => {
+    return new Promise((resolve, reject) => {
+      axios.get(`${API_URL}/comments?postId=${postId}`).then(
+        resp => resolve(resp.data),
+        err => reject(),
+      )
+    })
+  },
 };
 
 export default Api;

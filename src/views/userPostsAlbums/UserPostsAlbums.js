@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, Link, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import {
   TabContent,
@@ -27,6 +27,7 @@ import Api from '../../api/Api';
 const UserPostsAlbums = () => {
   const { id } = useParams();
   const { state: { userName }} = useLocation();
+  const history = useHistory();
   const [activeTab, setActiveTab] = useState('1');
   const [posts, setPosts] = useState([]);
   const [albums, setAlbums] = useState([]);
@@ -137,6 +138,14 @@ const UserPostsAlbums = () => {
       })
     }
   }
+
+  const goToPostDetail = (postId, postTitle, postBody, postUser) => {
+    history.push({
+      pathname: `/post/${postId}`,
+      search: `?title=${postTitle}&body=${postBody}&user=${postUser}`
+    });
+  };
+
   return (
     <div>
       <h3>{userName}</h3>
@@ -186,7 +195,7 @@ const UserPostsAlbums = () => {
                           <th scope="row">{`${i+1}`}</th>
                           <td>{post.title}</td>
                           <td>
-                            <Button color="link">view</Button>
+                            <Button color="link" onClick={() => goToPostDetail(post.id, post.title, post.body, userName)}>view</Button>
                             <Button color="link" onClick={() => handleEdit(post.id, post.title, post.body)}>edit</Button>
                             <Button color="link" onClick={() => confirmDelete(post.id)}>delete</Button>
                           </td>
