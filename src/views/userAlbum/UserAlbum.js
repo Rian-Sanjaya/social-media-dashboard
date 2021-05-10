@@ -66,7 +66,7 @@ const UserAlbum = () => {
         {
           photos.map((photo, i) => {
             return (
-              <Col xs="3"  key={photo.id} style={{ marginTop: '16px' }}>
+              <Col sm="4" md="2" key={photo.id} style={{ marginTop: '16px' }}>
                 <Card style={{ cursor: 'pointer' }} onClick={() => handlePhotoCllck(photo.url, photo.title)}>
                 <CardImg top width="100%" src={photo.thumbnailUrl} alt="Card image cap" />
                   <CardBody>

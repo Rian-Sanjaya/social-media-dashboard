@@ -14,6 +14,13 @@ import {
   Row,
   Col,
   Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Label,
+  Input
 } from 'reactstrap';
 import Api from '../../api/Api';
 
@@ -23,6 +30,11 @@ const UserPostsAlbums = () => {
   const [activeTab, setActiveTab] = useState('1');
   const [posts, setPosts] = useState([]);
   const [albums, setAlbums] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [titlePost, setTitlePost] = useState("");
+  const [bodyPost, setBodyPost] = useState("");
+  const [currentPostId, setCurrentPostId] = useState("");
+  const [onDelete, setOnDelete] = useState(false);
 
   /* eslint-disable */
   useEffect(() => {
@@ -48,6 +60,83 @@ const UserPostsAlbums = () => {
     if(activeTab !== tab) setActiveTab(tab);
   }
 
+  const toggleModal = () => {
+    setOnDelete(false);
+    setCurrentPostId("");
+    setTitlePost("");
+    setBodyPost("");
+    setModal(!modal)
+  };
+
+  const confirmDelete = (id) => {
+    setOnDelete(true);
+    setCurrentPostId(id);
+    setModal(true);
+  }
+
+  const handleDelete = () => {
+    Api.deletePost(currentPostId)
+      .then(() => {
+        setOnDelete(false);
+        setCurrentPostId("");
+        setModal(false);
+      })
+      .catch((err) => {
+        console.error("error: ", err);
+      })
+  }
+
+  const handleEdit = (id, title, body) => {
+    setCurrentPostId(id);
+    setTitlePost(title);
+    setBodyPost(body);
+    setModal(true);
+  }
+
+  const handleSavePost = (e) => {
+    e.preventDefault();
+
+    let payload;
+    
+    if (currentPostId) {
+      payload = {
+        body: bodyPost,
+        title: titlePost,
+        userId: id,
+        id: currentPostId,
+      }
+
+      Api.updatePost(currentPostId, payload)
+        .then(() => {
+          setOnDelete(false);
+          setCurrentPostId("");
+          setTitlePost("");
+          setBodyPost("");
+          setModal(false);
+        })
+        .catch((err) => {
+          console.error("error: ", err);
+        })
+    } else {
+      payload = {
+        body: bodyPost,
+        title: titlePost,
+        userId: id,
+      }
+
+      Api.savePost(payload)
+      .then(() => {
+        setOnDelete(false);
+        setCurrentPostId("");
+        setTitlePost("");
+        setBodyPost("");
+        setModal(false);
+      })
+      .catch((err) => {
+        console.error("error: ", err);
+      })
+    }
+  }
   return (
     <div>
       <h3>{userName}</h3>
@@ -74,7 +163,13 @@ const UserPostsAlbums = () => {
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <div>
-            <Button color="primary" style={{ marginTop: '16px', marginBottom: '16px' }}>Add Post</Button>
+            <Button
+              color="primary"
+              style={{ marginTop: '16px', marginBottom: '16px' }}
+              onClick={() => setModal(true)}
+            >
+              Add Post
+            </Button>
             <Table hover responsive>
               <thead>
                 <tr>
@@ -90,7 +185,11 @@ const UserPostsAlbums = () => {
                         <tr key={post.id}>
                           <th scope="row">{`${i+1}`}</th>
                           <td>{post.title}</td>
-                          <td>detail edit delete</td>
+                          <td>
+                            <Button color="link">view</Button>
+                            <Button color="link" onClick={() => handleEdit(post.id, post.title, post.body)}>edit</Button>
+                            <Button color="link" onClick={() => confirmDelete(post.id)}>delete</Button>
+                          </td>
                         </tr>
                       )
                     })
@@ -127,6 +226,61 @@ const UserPostsAlbums = () => {
           </Row>
         </TabPane>
       </TabContent>
+      <Modal isOpen={modal} toggle={toggleModal} centered>
+        <ModalHeader toggle={toggleModal}>
+          {
+            onDelete ? "Confirm Delete" : currentPostId ? "Edit Post" : "Add Post"
+          }
+        </ModalHeader>
+        <ModalBody>
+          {
+            onDelete
+            ? (
+                <>
+                  <div>Delete post ?</div>
+                  <Button color="primary" onClick={handleDelete}>Yes</Button>
+                </>
+              )
+            : (
+                <>
+                  <Form>
+                    <FormGroup>
+                      <Label for="titlepost">Title</Label>
+                      <Input
+                        type="text"
+                        name="title-post"
+                        id="titlepost"
+                        placeholder="Post Title"
+                        value={titlePost}
+                        onChange={(e) => setTitlePost(e.target.value)}
+                      />
+                    </FormGroup>
+                    <FormGroup style={{ marginTop: '16px' }}>
+                      <Label for="bodypost">Body</Label>
+                      <Input
+                        type="textarea"
+                        name="body-post"
+                        id="bodypost"
+                        placeholder="Input your post here"
+                        value={bodyPost}
+                        onChange={(e) => setBodyPost(e.target.value)}
+                      />
+                    </FormGroup>
+                  </Form>
+                  <div style={{ marginTop: '16px' }}>
+                    <Button
+                      color="primary"
+                      onClick={handleSavePost}
+                      disabled={!titlePost || !bodyPost}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </>
+              )
+          }
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

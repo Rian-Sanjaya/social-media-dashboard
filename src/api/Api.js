@@ -35,6 +35,30 @@ const Api = {
       );
     });
   },
+  savePost: (payload) => {
+    return new Promise((resolve, reject) => {
+      axios.post(`${API_URL}/posts`, payload).then(
+        resp => resolve(resp.data),
+        err => reject()
+      )
+    })
+  },
+  updatePost: (id, payload) => {
+    return new Promise((resolve, reject) => {
+      axios.put(`${API_URL}/posts/${id}`, payload).then(
+        resp => resolve(resp.data),
+        err => reject()
+      )
+    })
+  },
+  deletePost: (id) => {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${API_URL}/posts/${id}`).then(
+        resp => resolve(),
+        err => reject(),
+      )
+    })
+  },
 };
 
 export default Api;

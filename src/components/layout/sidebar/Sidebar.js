@@ -12,7 +12,7 @@ const Sidebar = () => {
         width: '240px',
         background: '#fff',
         overflowY: 'auto',
-        zIndex: '1200',
+        zIndex: '1000',
       }}
     >
       <ul style={{ paddingTop: '8px', paddingBottom: '8px' }}>
