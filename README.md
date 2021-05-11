@@ -1,5 +1,5 @@
 # Social Media Dashboard
-A single page application using React, Bootstrap.
+A single page application using React, Bootstrap. State management using React state hook. 
 Build it from scratch with `create-react-app`. 
 The API is provided by [JSONplaceholder](https://jsonplaceholder.typicode.com/).
 
